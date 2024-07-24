@@ -1,5 +1,5 @@
 /*
- * Run "npm run dev maintest/5-main.js" to test
+ * Run "npm run dev maintest/7-main.js" to test
 */
 
 export default function getBudgetObject(income, gdp, capita) {
