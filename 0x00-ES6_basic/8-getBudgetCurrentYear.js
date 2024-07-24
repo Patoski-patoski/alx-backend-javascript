@@ -1,12 +1,12 @@
 /*
  * Run "npm run dev maintest/8-main.js" to test
 */
-function getCurrentYear () {
+function getCurrentYear() {
   const date = new Date();
   return date.getFullYear();
 }
 
-export default function getBudgetForCurrentYear (income, gdp, capita) {
+export default function getBudgetForCurrentYear(income, gdp, capita) {
   const budget = {
     [`income-${getCurrentYear()}`]: income,
     [`gdp-${getCurrentYear()}`]: gdp,
