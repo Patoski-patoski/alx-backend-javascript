@@ -2,7 +2,7 @@
  * Run "npm run dev maintest/1-main.js" to test
 */
 
-export default function taskBlock(trueOrFalse) {
+export default function taskBlock (trueOrFalse) {
   const task = false;
   const task2 = true;
 
