@@ -5,7 +5,7 @@ import uploadPhoto from './5-photo-reject';
  * Run "npm run dev testFolder/5-main.js" to test
 */
 
-export default async function handleProfileSignup (firstName, lastName, filename) {
+export default async function handleProfileSignup(firstName, lastName, filename) {
   try {
     const userPromise = await signUpUser(firstName, lastName);
     const photoPromise = await uploadPhoto(filename);
