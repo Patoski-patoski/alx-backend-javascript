@@ -1,8 +1,10 @@
+/*
+ * Run "npm run dev maintest/9-main.js" to test
+*/
 export default function guardrail(mathFunction) {
   const queue = [];
   try {
-    const result = mathFunction();
-    queue.push(result);
+    queue.push(mathFunction());
   } catch (error) {
     queue.push(`Error: ${error.message}`);
   } finally {
