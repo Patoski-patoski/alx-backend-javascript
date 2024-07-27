@@ -7,7 +7,7 @@ export default async function asyncUploadUser() {
 
     return {
       photo: { status: photo.status, body: photo.body },
-      user: { firstName: user.firstName, lastName: user.lastName }
+      user: { firstName: user.firstName, lastName: user.lastName },
     };
   } catch (error) {
     return {
