@@ -1,3 +1,3 @@
 export default function setFromArray(arg) {
-  return new Set().add(arg);
+  return new Set(arg);
 }
