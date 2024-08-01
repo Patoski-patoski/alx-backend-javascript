@@ -3,7 +3,6 @@ export const weakMap = new WeakMap();
 /**
  * Track within the weakMap the number of times queryAPI is called for each endpoint.
  * @param {*Object} endPoint { protocol: 'http', name: 'getUsers' }
- * @author Adam Sanusi Babatunde
  */
 export function queryAPI(endPoint) {
   if (weakMap.get(endPoint) + 1) {
