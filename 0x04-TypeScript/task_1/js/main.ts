@@ -1,4 +1,4 @@
-interface Teacher {
+ interface Teacher {
     readonly firstName: string;
     readonly lastName: string;
     fullTimeEmployee: boolean;
@@ -7,10 +7,14 @@ interface Teacher {
     [key: string]: any; //index attribute to allow additional properties
 }
 
-const teacher3: Teacher = {
-    firstName: 'John',
-    fullTimeEmployee: false,
-    lastName: 'Doe',
-    location: 'London',
-    contract: false,
+interface Directors extends Teacher {
+    numberOfReports: number;
+}
+
+function printTeacher(firstName: string, lastName: string): string {
+    return `${firstName[0]}. ${lastName}`;
+}
+
+interface printTeacherFunction {
+    (firstName: string, lastName: string): string;
 };
