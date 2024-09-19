@@ -16,3 +16,5 @@ const app = http.createServer((req, res) => {
 });
 
 app.listen(PORT);
+
+module.exports = app
