@@ -1,34 +1,59 @@
-/**
- * In a file named 5-http.js, create a small HTTP server using the http module:
- * It should be assigned to the variable app and this one must be exported
- * HTTP server should listen on port 1245
- * It should return plain text
- * When the URL path is /, it should display Hello Holberton School! in the
- * page body
- * When the URL path is /students, it should display This is the list of our
- * students followed by the same content as the file 3-read_file_async.js
- * (with and without the database) - the name of the database must be passed
- *  as argument of the file CSV file can contain empty lines (at the end) - and
- *  they are not a valid student!
- */
-
-const http = require('http');
 const fs = require('fs').promises;
+const http = require('http');
 
 const PORT = 1245;
 
+async function countStudents(path) {
+  try {
+    const data = await fs.readFile(path, 'utf-8');
+    const rows = data.split('\n').filter((row) => row.trim() !== '');
+    const headers = rows[0].split(',');
+
+    let num = 0;
+    let CS = 0;
+    let SWE = 0;
+    const CSArray = [];
+    const SWEArray = [];
+
+    for (let i = 1; i < rows.length; i += 1) {
+      const row = rows[i].split(',');
+      const rowData = {};
+
+      headers.forEach((header, index) => {
+        rowData[header.trim()] = row[index];
+      });
+      num += 1;
+
+      if (rowData.field === 'CS') {
+        CS += 1;
+        CSArray.push(rowData.firstname);
+      } else if (rowData.field === 'SWE') {
+        SWE += 1;
+        SWEArray.push(rowData.firstname);
+      }
+    }
+    let numOfStudents = `Number of students: ${num}\n`;
+    numOfStudents += (`Number of students in CS: ${CS}. List: ${CSArray.join(', ')}\n`);
+    numOfStudents += (`Number of students in SWE: ${SWE}. List: ${SWEArray.join(', ')}\n`);
+
+    return numOfStudents.trim();
+  } catch (error) {
+    throw new Error('Cannot load the database');
+  }
+}
+
 const app = http.createServer(async (req, res) => {
   if (req.url === '/') {
-    res.setHeader('Content-type', 'text/plain');
     res.end('Hello Holberton School!');
   } else if (req.url === '/students') {
-    const data = await fs.readFile('database.csv', 'utf-8');
-    res.writeHead(200, {
-      'Content-Type': 'text/plain',
-    });
     res.write('This is the list of our students\n');
-    res.end(data);
+    const databaseName = process.argv[2] || 'database.csv';
+    await countStudents(databaseName)
+      .then((data) => res.end(data))
+      .catch((err) => res.end(err.message));
   }
 });
 
 app.listen(PORT);
+
+module.exports = app;
