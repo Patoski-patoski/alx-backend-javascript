@@ -1,60 +1,64 @@
 const express = require('express');
+const PORT = 1245;
 const fs = require('fs').promises;
+let app = express();
 
 async function countStudents(path) {
-  try {
-    const data = await fs.readFile(path, 'utf8');
-    const lines = data.split('\n').filter((line) => line.trim());
-    lines.shift();
+try {
+    const data = await fs.readFile(path, 'utf-8');
+    const rows = data.split('\n').filter((row) => row.trim() !== '');
+    const headers = rows[0].split(',');
 
-    let numberOfStudents = 0;
-    const fields = {};
+    let num = 0;
+    let CS = 0;
+    let SWE = 0;
+    const CSArray = [];
+    const SWEArray = [];
 
-    lines.forEach((line) => {
-      const student = line.split(',');
-      const firstName = student[0].trim();
-      const field = student[student.length - 1].trim();
+    for (let i = 1; i < rows.length; i += 1) {
+        const row = rows[i].split(',');
+        const rowData = {};
 
-      numberOfStudents += 1;
+        headers.forEach((header, index) => {
+            rowData[header.trim()] = row[index];
+        });
+        num += 1;
 
-      if (!fields[field]) {
-        fields[field] = { count: 0, firstNames: [] };
-      }
-      fields[field].count += 1;
-      fields[field].firstNames.push(firstName);
-    });
-
-    let output = `Number of students: ${numberOfStudents}\n`;
-    for (const [field, info] of Object.entries(fields)) {
-      output += `Number of students in ${field}: ${info.count}. List: ${info.firstNames.join(', ')}\n`;
+        if (rowData.field === 'CS') {
+            CS += 1;
+            CSArray.push(rowData.firstname);
+        } else if (rowData.field === 'SWE') {
+            SWE += 1;
+            SWEArray.push(rowData.firstname);
+        }
     }
+    let numOfStudents = `Number of students: ${num}\n`;
+    numOfStudents += (`Number of students in CS: ${CS}. List: ${CSArray.join(', ')}\n`);
+    numOfStudents += (`Number of students in SWE: ${SWE}. List: ${SWEArray.join(', ')}\n`);
 
-    return output.trim();
-  } catch (error) {
+    return numOfStudents.trim();
+} catch (error) {
     throw new Error('Cannot load the database');
-  }
+}
 }
 
-const app = express();
-
 app.get('/', (req, res) => {
-  res.send('Hello Holberton School!');
+res.send('Hello Holberton School!');
 });
 
 app.get('/students', async (req, res) => {
-  let filename = process.argv[2];
-  if (!filename) filename = 'database.csv';
-  await countStudents(filename)
-    .then((data) => {
-      res.send(`This is the list of our students\n${data}`);
-    })
-    .catch((err) => {
-      res.send(`This is the list of our students\n${err.message}`);
-    });
-});
+const databaseName = process.argv[2] || 'database.csv';
+try {
+ const data = await countStudents(databaseName);
+ res.status(200).send(`This is the list of our students\n${data}`);
+    
+} catch (error) {
+   res.status(404).send(`This is the list of our students\n${error.message}`);
+}
 
-app.listen(1245, () => {
-  console.log('Server listening on port 1245');
+});
+app.listen(PORT, () => {
+ console.log(`Server => ${PORT}`);
 });
 
 module.exports = app;
