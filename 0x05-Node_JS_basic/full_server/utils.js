@@ -6,7 +6,6 @@ async function readDatabase(path) {
     const rows = data.split('\n').filter((row) => row.trim() !== '');
     const headers = rows[0].split(',');
 
-    let num = 0;
     let CS = 0;
     let SWE = 0;
     const CSArray = [];
@@ -19,7 +18,6 @@ async function readDatabase(path) {
       headers.forEach((header, index) => {
         rowData[header.trim()] = row[index];
       });
-      num += 1;
 
       if (rowData.field === 'CS') {
         CS += 1;
