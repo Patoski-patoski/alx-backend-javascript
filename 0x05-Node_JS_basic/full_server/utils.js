@@ -30,7 +30,6 @@ async function readDatabase(path) {
       }
     }
     const arrnumOfStudents = [];
-    arrnumOfStudents[0] = `Number of students: ${num}\n`;
     arrnumOfStudents[1] = (`Number of students in CS: ${CS}. List: ${CSArray.join(', ')}\n`);
     arrnumOfStudents[2] = (`Number of students in SWE: ${SWE}. List: ${SWEArray.join(', ')}\n`);
 
