@@ -20,9 +20,11 @@ class StudentsController {
       }
       const data = await readDatabase(databaseName);
       if (param === 'CS') {
-        responseData = response.status(200).send(data[1].trim());
+        const cs = `List${data[1].trim().split('List')[1]}`;
+        responseData = response.status(200).send(cs);
       } else if (param === 'SWE') {
-        responseData = response.status(200).send(data[2].trim());
+        const swe = `List${data[2].trim().split('List')[1]}`;
+        responseData = response.status(200).send(swe);
       }
       return responseData;
     } catch (error) {
