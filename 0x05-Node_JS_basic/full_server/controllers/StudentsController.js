@@ -26,6 +26,9 @@ class StudentsController {
         const swe = `List${data[2].trim().split('List')[1]}`;
         responseData = response.status(200).send(swe);
       }
+      if (!responseData) {
+        return response.status(500).send('Cannot load the database');
+      }
       return responseData;
     } catch (error) {
       return response.status(500).send('Cannot load the database');
