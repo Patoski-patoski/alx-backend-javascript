@@ -44,6 +44,7 @@ async function countStudents(path) {
 }
 
 app.get('/', (req, res) => {
+  res.statusCode = 200;
   res.send('Hello World');
 });
 
@@ -51,6 +52,7 @@ app.get('/students', async (req, res) => {
   const databaseName = process.argv[2] || 'database.csv';
   try {
     const data = await countStudents(databaseName);
+    res.statusCode = 200;
     res.send(`This is the list of our students\n${data}`);
   } catch (error) {
     res.statusCode = 404;
