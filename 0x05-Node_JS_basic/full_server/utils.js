@@ -39,4 +39,4 @@ async function readDatabase(path) {
     throw new Error('Cannot load the database');
   }
 }
-export default readDatabase;
+module.exports = readDatabase;
